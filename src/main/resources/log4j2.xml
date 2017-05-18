@@ -3,16 +3,10 @@
 	<Appenders>
 		<Async name="Async">
 			<AppenderRef ref="Console" />
-			<AppenderRef ref="Syslog-tcp" />
 		</Async>
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</Console>
-		<Syslog name="Syslog-tcp" host="logs5.papertrailapp.com" port="22738"
-			protocol="TCP" appName="java-syslog" mdcId="mdc" facility="LOCAL0"
-			enterpriseNumber="18060" newLine="true" format="RFC5424"
-			ignoreExceptions="false" exceptionPattern="%throwable{full}">
-		</Syslog>
 	</Appenders>
 	<Loggers>
 		<Root level="debug">

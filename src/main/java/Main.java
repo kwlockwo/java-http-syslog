@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -14,15 +15,30 @@ import org.eclipse.jetty.servlet.ServletHolder;
 public class Main extends HttpServlet {
 
 	private static final Logger logger = LogManager.getLogger(Main.class);
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		logger.debug("Debug Message");
 		logger.error("Error Message");
 		logger.warn("Warn message");
 		logger.info("Info message");
-				
+
 		res.getWriter().print("Check your logs");
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		StringBuffer sb = new StringBuffer();
+		String line = null;
+		try {
+			BufferedReader reader = req.getReader();
+			while ((line = reader.readLine()) != null)
+				sb.append(line);
+		} catch (Exception ex) {}
+		
+		System.out.println(sb.toString());
+		
+		res.setStatus(HttpServletResponse.SC_OK);
 	}
 
 	public static void main(String[] args) throws Exception {
