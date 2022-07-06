@@ -16,6 +16,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.github.palindromicity.syslog.SyslogParser;
 import com.github.palindromicity.syslog.SyslogParserBuilder;
+import com.github.palindromicity.syslog.SyslogSpecification;
 
 public class Main extends HttpServlet {
 
@@ -44,7 +45,7 @@ public class Main extends HttpServlet {
 		System.out.println(sb.toString()); */
 
 		List<Map<String,Object>> syslogMapList = null;
-  		SyslogParser parser = new SyslogParserBuilder().build();
+		SyslogParser parser = new SyslogParserBuilder().forSpecification(SyslogSpecification.HEROKU_HTTPS_LOG_DRAIN).build();
 		try (BufferedReader reader = req.getReader()) {
 			syslogMapList = parser.parseLines(reader);
 		}
