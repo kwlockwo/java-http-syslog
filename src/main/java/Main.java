@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +13,9 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+
+import com.github.palindromicity.syslog.SyslogParser;
+import com.github.palindromicity.syslog.SyslogParserBuilder;
 
 public class Main extends HttpServlet {
 
@@ -28,7 +33,7 @@ public class Main extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		StringBuffer sb = new StringBuffer();
+		/* StringBuffer sb = new StringBuffer();
 		String line = null;
 		try {
 			BufferedReader reader = req.getReader();
@@ -36,7 +41,17 @@ public class Main extends HttpServlet {
 				sb.append(line);
 		} catch (Exception ex) {}
 		
-		System.out.println(sb.toString());
+		System.out.println(sb.toString()); */
+
+		List<Map<String,Object>> syslogMapList = null;
+  		SyslogParser parser = new SyslogParserBuilder().build();
+		try (BufferedReader reader = req.getReader()) {
+			syslogMapList = parser.parseLines(reader);
+		}
+
+		for(Map<String,Object> syslog : syslogMapList) {
+			System.out.println(syslog);
+		}
 		
 		res.setStatus(HttpServletResponse.SC_OK);
 	}
